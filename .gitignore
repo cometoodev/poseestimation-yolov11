@@ -1,0 +1,6 @@
+venv/ 
+*.mp4 
+static/uploads/ 
+__pycache__/ 
+*.pyc 
+*.pt 

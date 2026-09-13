@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Monitoring AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header>
+        <div class="header-content glass-panel-sm">
+            <h1>DRIVER MONITORING <span class="highlight">SYSTEM</span></h1>
+            <div id="status-text">SYSTEM READY - VOICE ACTIVE</div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="video-section">
+            <div class="monitor-frame glass-panel">
+                <div class="card-header"><span class="dot live"></span> LIVE FEED</div>
+                <div class="video-wrapper">
+                    <img id="videoStream" src="{{ url_for('video_feed') }}" alt="Camera">
+                </div>
+            </div>
+            <div class="graph-container glass-panel">
+                <div class="card-header"><span class="dot analytics"></span> ATTENTION METRICS</div>
+                <div class="chart-wrapper"><canvas id="focusChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="panel-box glass-panel">
+                <div class="panel-label">REAL-TIME STATUS</div>
+                <div class="focus-display">
+                    <div id="focus-text" class="focus-percent">100%</div>
+                    <div class="focus-label">ATTENTION SCORE</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="focus-bar" class="progress-bar-fill"></div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item"><span class="lbl">FPS</span><span id="fps-val" class="val">0</span></div>
+                    <div class="stat-item"><span class="lbl">SOURCE</span><span id="source-val" class="val">Webcam</span></div>
+                </div>
+            </div>
+
+            <div class="panel-box glass-panel">
+                <div class="panel-label">AI TUNING</div>
+                <div class="slider-group">
+                    <span>Confidence: <span id="confValue">{{ conf }}</span></span>
+                    <input type="range" min="0.1" max="1.0" step="0.05" value="{{ conf }}" class="slider" id="confSlider">
+                </div>
+                <div class="slider-group">
+                    <span>Logic Radius (%): <span id="logicValue">{{ logic }}</span></span>
+                    <input type="range" min="10" max="100" step="5" value="{{ logic }}" class="slider" id="logicSlider">
+                </div>
+            </div>
+
+            <div class="panel-box glass-panel">
+                <div class="panel-label">CONTROLS</div>
+                
+                <div class="btn" style="background: rgba(0,255,0,0.1); color: #00ff00; border: 1px solid #00ff00;">
+                    🤖 JARVIS VOICE: ACTIVE
+                </div>
+
+                <button class="btn" onclick="testTelegram()" style="background: rgba(0, 229, 255, 0.2); color: #00e5ff; border: 1px solid #00e5ff; margin-top: 10px; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); font-weight: bold;">
+                    ✈️ TELEGRAM: CONNECTED (TEST)
+                </button>
+
+                <a href="/download_report" class="btn" style="background: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid #ffc107; margin-top: 10px; text-decoration: none; display: block; text-align: center;">
+                    💾 DOWNLOAD TRIP REPORT (CSV)
+                </a>
+
+                <div class="btn-grid">
+                    <label class="btn btn-primary">UPLOAD VIDEO
+                        <input type="file" id="videoInput" accept="video/*" onchange="uploadFile('video')" style="display: none;">
+                    </label>
+                    <label class="btn btn-secondary">UPLOAD IMAGE
+                        <input type="file" id="imageInput" accept="image/*" onchange="uploadFile('image')" style="display: none;">
+                    </label>
+                </div>
+                <button class="btn btn-outline" onclick="resetToWebcam()">SWITCH TO WEBCAM</button>
+                <button class="btn btn-danger" onclick="takeSnapshot()">CAPTURE SNAPSHOT</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
